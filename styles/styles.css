@@ -581,6 +581,9 @@ padding: 2rem;
     background: var(--bg-color);
     padding: 10px;
 }
+.education{
+    overflow: visible; /* ensure pseudo-elements are not clipped on small screens */
+}
 .education .timeline{
     position: relative;
     max-width: 1200px;
@@ -589,12 +592,19 @@ padding: 2rem;
 .education .timeline::after{
     content: '';
     position: absolute;
+    display: block;
     width: 6px;
-    background: #582660;
+    background: #582660 !important;
     top: 0;
     bottom: 0;
     left: 50%;
     margin-left: -2px;
+    z-index: 10; /* ensure line renders above background but below icons */
+}
+
+/* keep timeline stacking context explicit */
+.education .timeline{
+    z-index: 0;
 }
 .education .container{
     padding: 10px 40px;
@@ -678,51 +688,83 @@ width: 50%;
     font-weight: 500;
     color: #0c0c0c;
 }
-@media screen and (max-width:600px){
+@media screen and (max-width:820px){
+    /* Convert timeline to a single-column vertical layout on tablets and phones */
     .education .timeline{
         margin-top: 2rem;
-    }    
+        padding-left: 0;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Move the vertical timeline line to the left side (around 36px) */
     .education .timeline::after {
         content: '';
         position: absolute;
+        display: block;
         width: 6px;
-        background: #582660;
+        background: #582660 !important;
         top: 0;
         bottom: 0;
-        left: 5%;
-        margin-left: 6px;
+        left: 36px;
+        margin-left: 0;
+        z-index: 10;
     }
+
+    /* Make sure the line isn't clipped and doesn't intercept events */
+    .education .timeline,
+    .education .timeline::after {
+        overflow: visible;
+        pointer-events: none;
+    }
+
+    /* Containers become full width with left padding to clear the timeline */
     .education .container{
         width: 100%;
-        padding-left: 8rem;
-        padding-right: 2rem;
+        padding-left: 5.25rem; /* smaller than mobile-only to fit tablets */
+        padding-right: 1.5rem;
+        margin-bottom: 1.75rem;
+        position: relative;
     }
+
+    /* Position the circular icon on the timeline line */
     .education .container::after{
-        font-size: 2.3rem;
+        font-size: 2.1rem;
+        left: 22px;
+        right: auto;
     }
-    .education .container::before{
-        left: 61px;
-        border: medium solid var(--main-color);
-        border-color: transparent var(--main-color) transparent transparent;
-    }
-    .education .left::after{
-        left: 15px;
-    }
+
+    /* Hide the triangular pointers used for left/right desktop layout */
+    .education .container::before,
+    .education .left::before,
+    .education .right::before,
+    .education .left::after,
     .education .right::after{
-        left: 15px;
+        display: none;
     }
+
+    /* Ensure left/right items stack and take full width */
+    .education .left,
     .education .right{
-        left: 0%;
-    }
-    .education .container {
+        left: 0;
         width: 100%;
-        padding-left: 8rem;
-        border-radius: 10px;
     }
-    .education .container::before {
-        left: 48px;
-        border: 12px solid var(--main-color);
-        border-color: transparent  var(--main-color) transparent transparent;
+
+    /* Make content fill the available width and add comfy padding */
+    .education .content{
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .education .content .tag{
+        padding-top: 0.75rem;
+        padding-left: 0;
+    }
+
+    .education .content .docs{
+        margin-left: 0;
+        padding-bottom: 0.75rem;
     }
 }
 
@@ -859,5 +901,42 @@ width: 50%;
         height: 3.5rem;
         font-size: 1.8rem;
         margin: 2rem 1rem 0;
+    }
+}
+
+/* Strong overrides to ensure timeline line renders on tablets/phones (fixes 414px/768px issues) */
+@media (max-width: 820px) {
+    .education .timeline {
+        overflow: visible !important;
+        z-index: 0 !important;
+    }
+    .education .timeline::after {
+        display: block !important;
+        width: 6px !important;
+        background: #582660 !important;
+        left: 36px !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        margin-left: 0 !important;
+        position: absolute !important;
+        z-index: 1 !important;
+        pointer-events: none !important;
+    }
+    .education .container::after {
+        z-index: 100 !important;
+        left: 22px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .education .timeline::after {
+        left: 30px !important;
+    }
+    .education .container{
+        padding-left: 4.75rem !important;
+    }
+    .education .container::after {
+        left: 20px !important;
+        font-size: 2rem !important;
     }
 }
