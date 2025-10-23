@@ -1,0 +1,80 @@
+/* Additional responsive styles */
+@supports (-webkit-touch-callout: none) {
+    /* CSS specific to iOS devices for better touch handling */
+    .btn,
+    .service-box,
+    .social-icons a,
+    nav a {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+}
+
+/* Ensure images don't overflow on small screens */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Improve touch targets for mobile */
+@media (max-width: 768px) {
+    .btn,
+    nav a,
+    .social-icons a {
+        min-height: 44px; /* Minimum touch target size */
+        min-width: 44px;
+        padding: 1.2rem 2rem;
+    }
+    
+    /* Improve spacing for touch targets */
+    nav a {
+        padding: 1rem 1.5rem;
+        margin-left: 1rem;
+    }
+
+    /* Adjust container widths for smaller screens */
+    .container {
+        width: 95%;
+        margin: 0 auto;
+    }
+
+    /* Better handling of long words in text */
+    p, h1, h2, h3, h4, h5, h6 {
+        word-wrap: break-word;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
+    }
+}
+
+/* Handle landscape orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+    .home {
+        min-height: auto;
+        padding: 8rem 3% 2rem;
+    }
+    
+    .home-img img {
+        width: 25vw;
+    }
+    
+    section {
+        min-height: auto;
+    }
+}
+
+/* Print styles */
+@media print {
+    .btn,
+    .social-icons,
+    #menu-icon {
+        display: none;
+    }
+    
+    * {
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+}
